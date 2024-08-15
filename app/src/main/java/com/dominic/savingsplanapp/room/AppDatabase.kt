@@ -1,4 +1,4 @@
-package com.dominic.savingsplanapp
+package com.dominic.savingsplanapp.room
 
 import androidx.room.Database
 import androidx.room.Room

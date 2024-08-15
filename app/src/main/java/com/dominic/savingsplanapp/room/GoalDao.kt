@@ -1,4 +1,4 @@
-package com.dominic.savingsplanapp
+package com.dominic.savingsplanapp.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
