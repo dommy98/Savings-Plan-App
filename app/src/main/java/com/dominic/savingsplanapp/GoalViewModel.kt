@@ -13,6 +13,8 @@ import com.dominic.savingsplanapp.room.GoalRepository
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class GoalViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -47,11 +49,20 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun calculateSavingsPlan(goal: Goal): Map<String, Double> {
+    fun calculateSavingsPlan(goal: Goal): Map<String, String> {
         val days = daysBetween(goal.startDate, goal.endDate)
-
-        // Use a safe call with the Elvis operator to handle potential null values
-        val amountNeeded = goal.amountNeeded ?: return emptyMap()
+        val amountNeeded = goal.amountNeeded ?: return mapOf(
+            "daily" to "N/A",
+            "weekly" to "N/A",
+            "monthly" to "N/A",
+            "annual" to "N/A"
+        )
+        if (days <= 0) return mapOf(
+            "daily" to "N/A",
+            "weekly" to "N/A",
+            "monthly" to "N/A",
+            "annual" to "N/A"
+        )
 
         val dailySavings = amountNeeded / days
         val weeklySavings = dailySavings * 7
@@ -59,19 +70,23 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
         val annualSavings = dailySavings * 365
 
         return mapOf(
-            "daily" to dailySavings,
-            "weekly" to weeklySavings,
-            "monthly" to monthlySavings,
-            "annual" to annualSavings
+            "daily" to "%.2f".format(dailySavings),
+            "weekly" to "%.2f".format(weeklySavings),
+            "monthly" to "%.2f".format(monthlySavings),
+            "annual" to "%.2f".format(annualSavings)
         )
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun daysBetween(startDate: String, endDate: String): Long {
-        val start = LocalDate.parse(startDate)
-        val end = LocalDate.parse(endDate)
-        return Duration.between(start.atStartOfDay(), end.atStartOfDay()).toDays()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        return try {
+            val start = LocalDate.parse(startDate, formatter)
+            val end = LocalDate.parse(endDate, formatter)
+            Duration.between(start.atStartOfDay(), end.atStartOfDay()).toDays()
+        } catch (e: DateTimeParseException) {
+            e.printStackTrace()
+            0 // Return 0 if there's an error parsing the dates
+        }
     }
 }
-

@@ -1,8 +1,12 @@
 package com.dominic.savingsplanapp
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val goalViewModel: GoalViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: GoalAdapter
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +42,21 @@ class MainActivity : AppCompatActivity() {
 
         binding.addGoalButton.setOnClickListener {
             showAddGoalDialog()
+        }
+
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission granted, proceed with PDF generation if needed
+            } else {
+                // Permission denied, show a message or handle it
+            }
+        }
+
+        // Request permission if not granted
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
         }
     }
 
@@ -60,7 +80,6 @@ class MainActivity : AppCompatActivity() {
 
                 val goal = Goal(goalName = goalName, amountNeeded = amount, startDate = startDate, endDate = endDate)
                 goalViewModel.insertGoal(goal)
-
 
                 val savingsPlan = goalViewModel.calculateSavingsPlan(goal)
                 PdfUtils.generatePdf(this, goal, savingsPlan)
