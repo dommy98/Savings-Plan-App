@@ -9,5 +9,5 @@ data class Goal(
     val goalName: String,
     val startDate: String,
     val endDate: String,
-    val amountNeeded: Double
+    val amountNeeded: Double?
 )

@@ -35,8 +35,9 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateSavingsPlan(goal: Goal): Map<String, Double> {
+        val amountNeeded = goal.amountNeeded ?: 0.0 // Default to 0.0 if null
         val days = daysBetween(goal.startDate, goal.endDate)
-        val dailySavings = goal.amountNeeded / days
+        val dailySavings = if (days > 0) amountNeeded / days else 0.0
         val weeklySavings = dailySavings * 7
         val monthlySavings = dailySavings * 30
         val annualSavings = dailySavings * 365
@@ -48,6 +49,7 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
             "annual" to annualSavings
         )
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun daysBetween(startDate: String, endDate: String): Long {

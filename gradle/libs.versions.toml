@@ -1,7 +1,9 @@
 [versions]
+activityKtx = "1.9.1"
 agp = "8.3.1"
 converterGson = "2.9.0"
 databindingRuntime = "8.5.2"
+fragmentKtx = "1.8.2"
 itext7Core = "7.1.17"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -13,15 +15,22 @@ lifecycleViewmodelKtx = "2.8.4"
 material = "1.12.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
+recyclerview = "1.3.2"
 retrofit = "2.9.0"
 roomRuntime = "2.6.1"
 
 [libraries]
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-databinding-runtime = { module = "androidx.databinding:databinding-runtime", version.ref = "databindingRuntime" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "databindingRuntime" }
 itext7-core = { module = "com.itextpdf:itext7-core", version.ref = "itext7Core" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

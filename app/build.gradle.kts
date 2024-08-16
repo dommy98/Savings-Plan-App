@@ -34,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
@@ -49,8 +52,17 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.room.ktx)
     implementation(libs.androidx.databinding.runtime)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.itext7.core) 
+    implementation(libs.itext7.core)
+
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    annotationProcessor (libs.androidx.room.compiler)
+    implementation (libs.androidx.recyclerview)
+    implementation (libs.androidx.viewbinding)
+
+    implementation (libs.androidx.activity.ktx)
+    implementation (libs.androidx.fragment.ktx)
 }
