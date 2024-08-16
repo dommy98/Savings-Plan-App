@@ -19,10 +19,11 @@ import java.time.format.DateTimeParseException
 class GoalViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: GoalRepository = GoalRepository(
-        AppDatabase.getDatabase(application).goalDao()
+        AppDatabase.getDatabase(application).goalDao(),
+        application.applicationContext
     )
 
-    val allGoals: LiveData<List<Goal>> = repository.getAllGoals()
+    val allGoals: LiveData<List<Goal>> = repository.allGoals
 
     private val _dailySavings = MutableLiveData<Double>()
     val dailySavings: LiveData<Double> get() = _dailySavings
@@ -88,5 +89,9 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
             e.printStackTrace()
             0 // Return 0 if there's an error parsing the dates
         }
+    }
+
+    fun fetchGoalsFromOnline() = viewModelScope.launch {
+        repository.fetchAllGoalsFromFirestore()
     }
 }

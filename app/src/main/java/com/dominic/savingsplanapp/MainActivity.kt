@@ -18,6 +18,10 @@ import com.dominic.savingsplanapp.databinding.ActivityMainBinding
 import com.dominic.savingsplanapp.databinding.DialogAddGoalBinding
 import com.dominic.savingsplanapp.room.Goal
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStreamWriter
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +48,13 @@ class MainActivity : AppCompatActivity() {
         binding.addGoalButton.setOnClickListener {
             showAddGoalDialog()
         }
+
+        binding.downloadPdfButton.setOnClickListener {
+            downloadPdf()
+        }
+
+        // Fetch goals from online
+        goalViewModel.fetchGoalsFromOnline()
 
         // Request storage permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -90,6 +101,28 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
             // Permission was denied
             // Notify the user that the permission is required
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun downloadPdf() {
+        val pdfContent = "Sample PDF Content" // Replace with actual PDF generation logic
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val file = File(getExternalFilesDir(null), "savings_plan.pdf")
+            try {
+                FileOutputStream(file).use { fos ->
+                    OutputStreamWriter(fos).use { writer ->
+                        writer.write(pdfContent)
+                    }
+                }
+                // Notify user of success
+            } catch (e: IOException) {
+                e.printStackTrace()
+                // Notify user of failure
+            }
+        } else {
+            // Handle for older devices
         }
     }
 }
