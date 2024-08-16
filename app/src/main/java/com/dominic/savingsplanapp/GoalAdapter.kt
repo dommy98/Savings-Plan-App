@@ -2,47 +2,44 @@ package com.dominic.savingsplanapp
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dominic.savingsplanapp.databinding.ItemGoalBinding
 import com.dominic.savingsplanapp.room.Goal
 
 class GoalAdapter(private val viewModel: GoalViewModel) :
-    ListAdapter<Goal, GoalAdapter.GoalViewHolder>(GoalDiffCallback()) {
+    RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
+
+    private var goals: List<Goal> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
-        val binding: ItemGoalBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_goal,
-            parent,
-            false
-        )
+        val binding = ItemGoalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GoalViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        holder.bind(getItem(position), viewModel)
+        val goal = goals[position]
+        holder.bind(goal)
     }
 
-    class GoalViewHolder(private val binding: ItemGoalBinding) :
+    override fun getItemCount(): Int = goals.size
+
+    fun submitList(newGoals: List<Goal>) {
+        goals = newGoals
+        notifyDataSetChanged()
+    }
+
+    inner class GoalViewHolder(private val binding: ItemGoalBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(goal: Goal, viewModel: GoalViewModel) {
+        fun bind(goal: Goal) {
             binding.goal = goal
             binding.viewModel = viewModel
+
+            binding.downloadButton.setOnClickListener {
+                val savingsPlan = viewModel.calculateSavingsPlan(goal)
+                PdfUtils.generatePdf(binding.root.context, goal, savingsPlan)
+            }
             binding.executePendingBindings()
-        }
-    }
-
-    class GoalDiffCallback : DiffUtil.ItemCallback<Goal>() {
-        override fun areItemsTheSame(oldItem: Goal, newItem: Goal): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Goal, newItem: Goal): Boolean {
-            return oldItem == newItem
         }
     }
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "753404286553",
+    "project_id": "savings-plan-app",
+    "storage_bucket": "savings-plan-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753404286553:android:347d918592a7524bdcc348",
+        "android_client_info": {
+          "package_name": "com.dominic.savingsplanapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS1AimsVZv8gZvlDJTAHPx6w6HUk32NjY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
