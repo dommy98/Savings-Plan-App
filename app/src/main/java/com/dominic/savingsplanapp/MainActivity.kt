@@ -1,8 +1,10 @@
 package com.dominic.savingsplanapp
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: GoalAdapter
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showAddGoalDialog() {
         val dialogBinding: DialogAddGoalBinding = DataBindingUtil.inflate(
             LayoutInflater.from(this),
@@ -56,6 +60,10 @@ class MainActivity : AppCompatActivity() {
 
                 val goal = Goal(goalName = goalName, amountNeeded = amount, startDate = startDate, endDate = endDate)
                 goalViewModel.insertGoal(goal)
+
+
+                val savingsPlan = goalViewModel.calculateSavingsPlan(goal)
+                PdfUtils.generatePdf(this, goal, savingsPlan)
             }
             .setNegativeButton("Cancel", null)
             .show()

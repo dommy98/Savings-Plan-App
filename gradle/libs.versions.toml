@@ -5,6 +5,7 @@ converterGson = "2.9.0"
 databindingRuntime = "8.5.2"
 fragmentKtx = "1.8.2"
 itext7Core = "7.1.17"
+itextpdf = "5.5.13.3"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -33,6 +34,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "databindingRuntime" }
 itext7-core = { module = "com.itextpdf:itext7-core", version.ref = "itext7Core" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+itextpdf = { module = "com.itextpdf:itextpdf", version.ref = "itextpdf" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

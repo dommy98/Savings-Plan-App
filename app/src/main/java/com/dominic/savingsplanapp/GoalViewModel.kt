@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dominic.savingsplanapp.room.AppDatabase
 import com.dominic.savingsplanapp.room.Goal
@@ -21,6 +22,18 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
 
     val allGoals: LiveData<List<Goal>> = repository.getAllGoals()
 
+    private val _dailySavings = MutableLiveData<Double>()
+    val dailySavings: LiveData<Double> get() = _dailySavings
+
+    private val _weeklySavings = MutableLiveData<Double>()
+    val weeklySavings: LiveData<Double> get() = _weeklySavings
+
+    private val _monthlySavings = MutableLiveData<Double>()
+    val monthlySavings: LiveData<Double> get() = _monthlySavings
+
+    private val _annualSavings = MutableLiveData<Double>()
+    val annualSavings: LiveData<Double> get() = _annualSavings
+
     fun insertGoal(goal: Goal) = viewModelScope.launch {
         repository.insert(goal)
     }
@@ -35,9 +48,12 @@ class GoalViewModel(application: Application) : AndroidViewModel(application) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun calculateSavingsPlan(goal: Goal): Map<String, Double> {
-        val amountNeeded = goal.amountNeeded ?: 0.0 // Default to 0.0 if null
         val days = daysBetween(goal.startDate, goal.endDate)
-        val dailySavings = if (days > 0) amountNeeded / days else 0.0
+
+        // Use a safe call with the Elvis operator to handle potential null values
+        val amountNeeded = goal.amountNeeded ?: return emptyMap()
+
+        val dailySavings = amountNeeded / days
         val weeklySavings = dailySavings * 7
         val monthlySavings = dailySavings * 30
         val annualSavings = dailySavings * 365

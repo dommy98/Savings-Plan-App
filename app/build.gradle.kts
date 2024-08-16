@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.itext7.core)
+    implementation (libs.itextpdf)
 
     implementation (libs.androidx.lifecycle.livedata.ktx)
     annotationProcessor (libs.androidx.room.compiler)
