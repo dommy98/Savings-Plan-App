@@ -49,14 +49,10 @@ class MainActivity : AppCompatActivity() {
             showAddGoalDialog()
         }
 
-        binding.downloadPdfButton.setOnClickListener {
-            downloadPdf()
-        }
 
-        // Fetch goals from online
         goalViewModel.fetchGoalsFromOnline()
 
-        // Request storage permissions
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkPermissions()
         }
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    // Check and request permissions for writing to external storage
+
     private fun checkPermissions() {
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -99,8 +95,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-            // Permission was denied
-            // Notify the user that the permission is required
+
         }
     }
 
